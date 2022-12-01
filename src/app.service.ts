@@ -106,6 +106,9 @@ export class AppService {
       mRoomName: `Phòng trọ ${id}`,
       mImageUrl: [
         'https://ancu.me/images/201904/cac-mau-phong-tro-dep-hien-nay-duoc-khach-hang-ua-chuong/cac-mau-phong-tro-dep-hien-nay-duoc-khach-hang-ua-chuong.jpg',
+        'https://th.bing.com/th/id/OIP.C9dSHqsL4_BLNl4ujKl2BwHaE8?w=288&h=192&c=7&r=0&o=5&pid=1.7',
+        'https://th.bing.com/th/id/OIP.e9xsCbZ4XvnDk77p5af6CAHaFj?w=249&h=187&c=7&r=0&o=5&pid=1.7',
+        'https://th.bing.com/th/id/OIP.I6RKli6o-SO5v-0wsjCpTQHaFj?w=250&h=187&c=7&r=0&o=5&pid=1.7',
       ],
       mRentPrice: 2000000,
       mAddress: 'Ha Noi',

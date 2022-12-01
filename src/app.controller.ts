@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Bill } from './model/Bill';
 import { User } from './model/User';
@@ -14,26 +14,43 @@ export class AppController {
     return this.appService.getHello();
   }
   @Get('/user')
-  getUser(): User[] {
-    return this.appService.getUser();
+  getUsers(): User[] {
+    return this.appService.getUsers();
   }
+
+  getUserById(@Param('id') id: number): User {
+    return this.appService.getUserById(id);
+  }
+
   @Post('/user')
   createUser(userInfo: User): string {
     return this.appService.createUser(userInfo);
   }
 
   @Get('/bill')
-  getBill(): Bill[] {
-    return this.appService.getBill();
+  getBills(): Bill[] {
+    return this.appService.getBills();
+  }
+  @Get('/bill/:id')
+  getBillById(@Param('id') id: number): Bill {
+    return this.appService.getBillById(id);
   }
 
   @Get('/room')
-  getRoom(): Room[] {
-    return this.appService.getRoom();
+  getRooms(): Room[] {
+    return this.appService.getRooms();
+  }
+  @Get('/room/:id')
+  getRoomById(@Param('id') id: number): Room {
+    return this.appService.getRoomById(id);
   }
 
   @Get('/fix-request')
-  getFixRequest(): FixRequest[] {
-    return this.appService.getFixRequest();
+  getFixRequests(): FixRequest[] {
+    return this.appService.getFixRequests();
+  }
+  @Get('/fix-request/:id')
+  getFixRequestById(@Param('id') id: number): FixRequest {
+    return this.appService.getFixRequestById(id);
   }
 }

@@ -32,4 +32,6 @@ export enum Extension {
   PARKING = 'PARKING',
   WIFI = 'WIFI',
   GARRET = 'GARRET',
+  ELECTRIC = 'ELECTRIC',
+  WATER = 'WATER',
 }

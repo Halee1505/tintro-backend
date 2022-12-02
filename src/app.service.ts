@@ -47,7 +47,7 @@ export class UserService {
       if (user.mPassword === password && user.mRole === role) {
         return res.status(HttpStatus.OK).json({
           message: 'Login successfully',
-          user,
+          data: user,
           statusCode: HttpStatus.OK,
         });
       } else if (user.mPassword !== password) {

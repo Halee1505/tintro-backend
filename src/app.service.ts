@@ -45,18 +45,27 @@ export class UserService {
       .exec();
     if (user) {
       if (user.mPassword === password && user.mRole === role) {
-        return res.status(HttpStatus.OK).json(user);
+        return res.status(HttpStatus.OK).json({
+          message: 'Login successfully',
+          user,
+          statusCode: HttpStatus.OK,
+        });
       } else if (user.mPassword !== password) {
-        return res
-          .status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
-          .json('Sai mật khẩu');
+        return res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).json({
+          message: 'Sai mật khẩu',
+          statusCode: HttpStatus.NON_AUTHORITATIVE_INFORMATION,
+        });
       } else {
-        return res
-          .status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
-          .json('Sai vai trò');
+        return res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).json({
+          message: 'Sai vai trò',
+          statusCode: HttpStatus.NON_AUTHORITATIVE_INFORMATION,
+        });
       }
     } else {
-      return res.status(HttpStatus.NOT_FOUND).json('Không tìm thấy người dùng');
+      return res.status(HttpStatus.NOT_FOUND).json({
+        message: 'Không tìm thấy người dùng',
+        statusCode: HttpStatus.NOT_FOUND,
+      });
     }
   }
 }

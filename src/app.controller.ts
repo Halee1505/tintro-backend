@@ -51,6 +51,11 @@ export class UserController {
   createUser(@Body() user: User): Promise<User> {
     return this.userService.createUser(user);
   }
+  @Post('login')
+  login(@Body() phoneNumber: string, password: string): Promise<User | string> {
+    return this.userService.login(phoneNumber, password);
+  }
+
   @Put(':id')
   updateUser(@Param('id') id: number, @Body() user: User): Promise<User> {
     return this.userService.updateUser(id, user);

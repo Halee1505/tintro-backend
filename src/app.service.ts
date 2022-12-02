@@ -32,6 +32,19 @@ export class UserService {
   async deleteUser(id: number): Promise<User> {
     return this.userModel.findOneAndDelete({ _id: id }).exec();
   }
+
+  async login(phoneNumber: string, password: string): Promise<User | string> {
+    const user = await this.userModel
+      .findOne({ phoneNumber: phoneNumber })
+      .exec();
+    if (user) {
+      if (user.mPassword === password) {
+        return user;
+      }
+      return 'Wrong password';
+    }
+    return 'User not found';
+  }
 }
 
 export class BillService {

@@ -33,12 +33,16 @@ export class UserService {
     return this.userModel.findOneAndDelete({ _id: id }).exec();
   }
 
-  async login(phoneNumber: string, password: string): Promise<User | string> {
+  async login(
+    phoneNumber: string,
+    password: string,
+    role: string,
+  ): Promise<User | string> {
     const user = await this.userModel
       .findOne({ phoneNumber: phoneNumber })
       .exec();
     if (user) {
-      if (user.mPassword === password) {
+      if (user.mPassword === password && user.mRole === role) {
         return user;
       }
       return 'Wrong password';

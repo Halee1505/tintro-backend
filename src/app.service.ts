@@ -19,18 +19,18 @@ export class UserService {
     return this.userModel.find().exec();
   }
   async getUserById(id: number): Promise<User> {
-    return this.userModel.findOne({ mId: id }).exec();
+    return this.userModel.findOne({ _id: id }).exec();
   }
   async createUser(userInfo: User): Promise<User> {
     const newUser = new this.userModel(userInfo);
     return await newUser.save();
   }
   async updateUser(id: number, userInfo: User): Promise<User> {
-    return this.userModel.findOneAndUpdate({ mId: id }, userInfo).exec();
+    return this.userModel.findOneAndUpdate({ _id: id }, userInfo).exec();
   }
 
   async deleteUser(id: number): Promise<User> {
-    return this.userModel.findOneAndDelete({ mId: id }).exec();
+    return this.userModel.findOneAndDelete({ _id: id }).exec();
   }
 }
 
@@ -40,17 +40,17 @@ export class BillService {
     return this.billModel.find().exec();
   }
   async getBillById(id: number): Promise<Bill> {
-    return this.billModel.findOne({ mId: id }).exec();
+    return this.billModel.findOne({ _id: id }).exec();
   }
   async createBill(billInfo: Bill): Promise<Bill> {
     const newBill = new this.billModel(billInfo);
     return await newBill.save();
   }
   async updateBill(id: number, billInfo: Bill): Promise<Bill> {
-    return this.billModel.findOneAndUpdate({ mId: id }, billInfo).exec();
+    return this.billModel.findOneAndUpdate({ _id: id }, billInfo).exec();
   }
   async deleteBill(id: number): Promise<Bill> {
-    return this.billModel.findOneAndDelete({ mId: id }).exec();
+    return this.billModel.findOneAndDelete({ _id: id }).exec();
   }
 }
 
@@ -60,17 +60,17 @@ export class RoomService {
     return this.roomModel.find().exec();
   }
   async getRoomById(id: number): Promise<Room> {
-    return this.roomModel.findOne({ mId: id }).exec();
+    return this.roomModel.findOne({ _id: id }).exec();
   }
   async createRoom(roomInfo: Room): Promise<Room> {
     const newRoom = new this.roomModel(roomInfo);
     return await newRoom.save();
   }
   async updateRoom(id: number, roomInfo: Room): Promise<Room> {
-    return this.roomModel.findOneAndUpdate({ mId: id }, roomInfo).exec();
+    return this.roomModel.findOneAndUpdate({ _id: id }, roomInfo).exec();
   }
   async deleteRoom(id: number): Promise<Room> {
-    return this.roomModel.findOneAndDelete({ mId: id }).exec();
+    return this.roomModel.findOneAndDelete({ _id: id }).exec();
   }
 }
 
@@ -85,7 +85,7 @@ export class FixRequestService {
   async getFixRequestById(id: number): Promise<FixRequest> {
     return this.fixRequestModel
       .findOne({
-        mId: id,
+        _id: id,
       })
       .exec();
   }
@@ -98,14 +98,14 @@ export class FixRequestService {
     fixRequestInfo: FixRequest,
   ): Promise<FixRequest> {
     return this.fixRequestModel
-      .findOneAndUpdate({ mId: id }, fixRequestInfo, {
+      .findOneAndUpdate({ _id: id }, fixRequestInfo, {
         new: true,
       })
       .exec();
   }
 
   async deleteFixRequest(id: number): Promise<FixRequest> {
-    return this.fixRequestModel.findOneAndDelete({ mId: id }).exec();
+    return this.fixRequestModel.findOneAndDelete({ _id: id }).exec();
   }
 }
 
@@ -118,7 +118,7 @@ export class ExtensionService {
     return this.extensionModel.find().exec();
   }
   async getExtensionById(id: number): Promise<Extension> {
-    return this.extensionModel.findOne({ mId: id }).exec();
+    return this.extensionModel.findOne({ _id: id }).exec();
   }
   async createExtension(extensionInfo: Extension): Promise<Extension> {
     const newExtension = new this.extensionModel(extensionInfo);
@@ -129,10 +129,10 @@ export class ExtensionService {
     extensionInfo: Extension,
   ): Promise<Extension> {
     return this.extensionModel
-      .findOneAndUpdate({ mId: id }, extensionInfo)
+      .findOneAndUpdate({ _id: id }, extensionInfo)
       .exec();
   }
   async deleteExtension(id: number): Promise<Extension> {
-    return this.extensionModel.findOneAndDelete({ mId: id }).exec();
+    return this.extensionModel.findOneAndDelete({ _id: id }).exec();
   }
 }

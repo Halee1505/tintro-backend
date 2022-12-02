@@ -6,8 +6,6 @@ export type roomDocument = Room & Document;
 @Schema()
 export class Room {
   @Prop()
-  mId: number;
-  @Prop()
   mRenterId: number;
   @Prop()
   mLeaserId: number;

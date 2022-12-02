@@ -6,8 +6,6 @@ export type fixRequestDocument = FixRequest & Document;
 @Schema()
 export class FixRequest {
   @Prop()
-  mId: number;
-  @Prop()
   mRoomId: number;
   @Prop()
   mTitle: string;

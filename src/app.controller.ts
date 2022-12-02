@@ -52,8 +52,9 @@ export class UserController {
     return this.userService.createUser(user);
   }
   @Post('login')
-  login(@Body() user: User): Promise<User | string> {
+  login(@Res() res, @Body() user: any): Promise<User> {
     return this.userService.login(
+      res,
       user.mPhoneNumber,
       user.mPassword,
       user.mRole,

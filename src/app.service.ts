@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res, HttpStatus, Body } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Extension, extensionDocument } from './model/extension.schema';
@@ -34,20 +34,30 @@ export class UserService {
   }
 
   async login(
+    @Res() res,
+    @Body()
     phoneNumber: string,
     password: string,
     role: string,
-  ): Promise<User | string> {
+  ): Promise<User> {
     const user = await this.userModel
-      .findOne({ phoneNumber: phoneNumber })
+      .findOne({ mPhoneNumber: phoneNumber })
       .exec();
     if (user) {
       if (user.mPassword === password && user.mRole === role) {
-        return user;
+        return res.status(HttpStatus.OK).json(user);
+      } else if (user.mPassword !== password) {
+        return res
+          .status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
+          .json('Sai mật khẩu');
+      } else {
+        return res
+          .status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
+          .json('Sai vai trò');
       }
-      return 'Wrong password';
+    } else {
+      return res.status(HttpStatus.NOT_FOUND).json('Không tìm thấy người dùng');
     }
-    return 'User not found';
   }
 }
 

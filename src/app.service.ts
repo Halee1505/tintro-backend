@@ -1,160 +1,138 @@
 import { Injectable } from '@nestjs/common';
-import { Bill, BillStatus } from './model/Bill';
-import { User, UserRole } from './model/User';
-import { Extension, Room, RoomStatus } from './model/Room';
-import { FixRequest, FixRequestStatus } from './model/FixRequest';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Extension, extensionDocument } from './model/extension.schema';
+import { Bill, billDocument } from './model/bill.schema';
+import { Room, roomDocument } from './model/room.schema';
+import { FixRequest, fixRequestDocument } from './model/fixRequest.schema';
+import { User, userDocument } from './model/user.schema';
 @Injectable()
 export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
-  getUsers(): User[] {
-    return [
-      {
-        mId: 1,
-        mUserName: 'Nguyen Van A',
-        mEmail: '',
-        mPassword: '',
-        mPhoneNumber: '0123456789',
-        mRole: UserRole.RENTER,
-        mCreated: new Date(),
-        mUpdated: new Date(),
-      },
-    ];
+}
+
+export class UserService {
+  constructor(@InjectModel(User.name) private userModel: Model<userDocument>) {}
+  async getUsers(): Promise<User[]> {
+    return this.userModel.find().exec();
   }
-  getUserById(id: number): User {
-    return {
-      mId: id,
-      mUserName: 'Nguyen Van A',
-      mEmail: '',
-      mPassword: '',
-      mPhoneNumber: '0123456789',
-      mRole: UserRole.RENTER,
-      mCreated: new Date(),
-      mUpdated: new Date(),
-    };
+  async getUserById(id: number): Promise<User> {
+    return this.userModel.findOne({ mId: id }).exec();
   }
-  createUser(userInfo: User): string {
-    return `Create user ${userInfo.mUserName} successfull`;
+  async createUser(userInfo: User): Promise<User> {
+    const newUser = new this.userModel(userInfo);
+    return await newUser.save();
+  }
+  async updateUser(id: number, userInfo: User): Promise<User> {
+    return this.userModel.findOneAndUpdate({ mId: id }, userInfo).exec();
   }
 
-  getBills(): Bill[] {
-    return [
-      {
-        mId: 1,
-        mRoomId: 1,
-        mRenterId: 1,
-        mLeaserId: 1,
-        mRentDate: new Date(),
-        mElectricityFrom: 0,
-        mWaterFrom: 0,
-        mElectricityTo: 100,
-        mWaterTo: 2,
-        mTotalElectricity: 100,
-        mTotalWater: 2,
-        mTotalPrice: 2000000,
-        mStatus: BillStatus.NOT_PAID,
-      },
-    ];
+  async deleteUser(id: number): Promise<User> {
+    return this.userModel.findOneAndDelete({ mId: id }).exec();
   }
-  getBillById(id: number): Bill {
-    return {
-      mId: id,
-      mRoomId: id,
-      mRenterId: id,
-      mLeaserId: id,
-      mRentDate: new Date(),
-      mElectricityFrom: 0,
-      mWaterFrom: 0,
-      mElectricityTo: 100,
-      mWaterTo: 2,
-      mTotalElectricity: 100,
-      mTotalWater: 2,
-      mTotalPrice: 2000000,
-      mStatus: BillStatus.NOT_PAID,
-    };
+}
+
+export class BillService {
+  constructor(@InjectModel(Bill.name) private billModel: Model<billDocument>) {}
+  async getBills(): Promise<Bill[]> {
+    return this.billModel.find().exec();
+  }
+  async getBillById(id: number): Promise<Bill> {
+    return this.billModel.findOne({ mId: id }).exec();
+  }
+  async createBill(billInfo: Bill): Promise<Bill> {
+    const newBill = new this.billModel(billInfo);
+    return await newBill.save();
+  }
+  async updateBill(id: number, billInfo: Bill): Promise<Bill> {
+    return this.billModel.findOneAndUpdate({ mId: id }, billInfo).exec();
+  }
+  async deleteBill(id: number): Promise<Bill> {
+    return this.billModel.findOneAndDelete({ mId: id }).exec();
+  }
+}
+
+export class RoomService {
+  constructor(@InjectModel(Room.name) private roomModel: Model<roomDocument>) {}
+  async getRooms(): Promise<Room[]> {
+    return this.roomModel.find().exec();
+  }
+  async getRoomById(id: number): Promise<Room> {
+    return this.roomModel.findOne({ mId: id }).exec();
+  }
+  async createRoom(roomInfo: Room): Promise<Room> {
+    const newRoom = new this.roomModel(roomInfo);
+    return await newRoom.save();
+  }
+  async updateRoom(id: number, roomInfo: Room): Promise<Room> {
+    return this.roomModel.findOneAndUpdate({ mId: id }, roomInfo).exec();
+  }
+  async deleteRoom(id: number): Promise<Room> {
+    return this.roomModel.findOneAndDelete({ mId: id }).exec();
+  }
+}
+
+export class FixRequestService {
+  constructor(
+    @InjectModel(FixRequest.name)
+    private fixRequestModel: Model<fixRequestDocument>,
+  ) {}
+  async getFixRequests(): Promise<FixRequest[]> {
+    return this.fixRequestModel.find().exec();
+  }
+  async getFixRequestById(id: number): Promise<FixRequest> {
+    return this.fixRequestModel
+      .findOne({
+        mId: id,
+      })
+      .exec();
+  }
+  async createFixRequest(fixRequestInfo: FixRequest): Promise<FixRequest> {
+    const newFixRequest = new this.fixRequestModel(fixRequestInfo);
+    return await newFixRequest.save();
+  }
+  async updateFixRequest(
+    id: number,
+    fixRequestInfo: FixRequest,
+  ): Promise<FixRequest> {
+    return this.fixRequestModel
+      .findOneAndUpdate({ mId: id }, fixRequestInfo, {
+        new: true,
+      })
+      .exec();
   }
 
-  getRooms(): Room[] {
-    return new Array<number>(10).fill(0).map((_, index) => {
-      return {
-        mId: index,
-        mRenterId: index,
-        mLeaserId: index,
-        mRoomName: `Phòng trọ ${index}`,
-        mImageUrl: [
-          'https://ancu.me/images/201904/cac-mau-phong-tro-dep-hien-nay-duoc-khach-hang-ua-chuong/cac-mau-phong-tro-dep-hien-nay-duoc-khach-hang-ua-chuong.jpg',
-        ],
-        mRentPrice: 2000000,
-        mAddress: 'Ha Noi',
-        mArea: 20,
-        mExtension: [Extension.AIR_CONDITIONER],
-        mDescription: 'Phong tro',
-        mStatus: RoomStatus.AVAILABLE,
-        mElectricityPrice: 2000,
-        mWaterPrice: 2000,
-        mBillDeadline: new Date(),
-        mCreated: new Date(),
-      };
-    });
+  async deleteFixRequest(id: number): Promise<FixRequest> {
+    return this.fixRequestModel.findOneAndDelete({ mId: id }).exec();
   }
-  getRoomById(id: number): Room {
-    return {
-      mId: id,
-      mRenterId: id,
-      mLeaserId: id,
-      mRoomName: `Phòng trọ ${id}`,
-      mImageUrl: [
-        'https://ancu.me/images/201904/cac-mau-phong-tro-dep-hien-nay-duoc-khach-hang-ua-chuong/cac-mau-phong-tro-dep-hien-nay-duoc-khach-hang-ua-chuong.jpg',
-        'https://th.bing.com/th/id/OIP.C9dSHqsL4_BLNl4ujKl2BwHaE8?w=288&h=192&c=7&r=0&o=5&pid=1.7',
-        'https://th.bing.com/th/id/OIP.e9xsCbZ4XvnDk77p5af6CAHaFj?w=249&h=187&c=7&r=0&o=5&pid=1.7',
-        'https://th.bing.com/th/id/OIP.I6RKli6o-SO5v-0wsjCpTQHaFj?w=250&h=187&c=7&r=0&o=5&pid=1.7',
-      ],
-      mRentPrice: 2000000,
-      mAddress: 'Ha Noi',
-      mArea: 20,
-      mExtension: [
-        Extension.AIR_CONDITIONER,
-        Extension.FRIDGE,
-        Extension.WASHING_MACHINE,
-        Extension.KITCHEN,
-        Extension.FREE_TIME,
-        Extension.PARKING,
-        Extension.WIFI,
-        Extension.GARRET,
-        Extension.ELECTRIC,
-        Extension.WATER,
-      ],
-      mDescription: 'Phong tro',
-      mStatus: RoomStatus.AVAILABLE,
-      mElectricityPrice: 2000,
-      mWaterPrice: 2000,
-      mBillDeadline: new Date(),
-      mCreated: new Date(),
-    };
+}
+
+export class ExtensionService {
+  constructor(
+    @InjectModel(Extension.name)
+    private extensionModel: Model<extensionDocument>,
+  ) {}
+  async getExtensions(): Promise<Extension[]> {
+    return this.extensionModel.find().exec();
   }
-  getFixRequests(): FixRequest[] {
-    return [
-      {
-        mId: 1,
-        mRoomId: 1,
-        mTitle: 'Sua chua',
-        mDescription: 'Sua chua',
-        mStatus: FixRequestStatus.PENDING,
-        mCreated: new Date(),
-        mUpdated: new Date(),
-      },
-    ];
+  async getExtensionById(id: number): Promise<Extension> {
+    return this.extensionModel.findOne({ mId: id }).exec();
   }
-  getFixRequestById(id: number): FixRequest {
-    return {
-      mId: id,
-      mRoomId: id,
-      mTitle: 'Sua chua',
-      mDescription: 'Sua chua',
-      mStatus: FixRequestStatus.PENDING,
-      mCreated: new Date(),
-      mUpdated: new Date(),
-    };
+  async createExtension(extensionInfo: Extension): Promise<Extension> {
+    const newExtension = new this.extensionModel(extensionInfo);
+    return await newExtension.save();
+  }
+  async updateExtension(
+    id: number,
+    extensionInfo: Extension,
+  ): Promise<Extension> {
+    return this.extensionModel
+      .findOneAndUpdate({ mId: id }, extensionInfo)
+      .exec();
+  }
+  async deleteExtension(id: number): Promise<Extension> {
+    return this.extensionModel.findOneAndDelete({ mId: id }).exec();
   }
 }

@@ -1,37 +1,46 @@
 /* eslint-disable prettier/prettier */
-export interface Room {
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+
+export type roomDocument = Room & Document;
+@Schema()
+export class Room {
+  @Prop()
   mId: number;
+  @Prop()
   mRenterId: number;
+  @Prop()
   mLeaserId: number;
+  @Prop()
   mRoomName: string;
+  @Prop()
   mImageUrl: string[];
+  @Prop()
   mRentPrice: number;
+  @Prop()
   mAddress: string;
+  @Prop()
   mArea: number;
-  mExtension: Extension[];
+  @Prop()
   mDescription: string;
+  @Prop()
   mStatus: RoomStatus;
+  @Prop()
   mElectricityPrice: number;
+  @Prop()
   mWaterPrice: number;
+  @Prop()
   mBillDeadline: Date;
+  @Prop()
   mCreated: Date;
+  @Prop()
+  mUpdated: Date;
 }
+
+export const RoomSchema = SchemaFactory.createForClass(Room);
 
 export enum RoomStatus {
   AVAILABLE = 'AVAILABLE',
   RENTED = 'RENTED',
   CANCELLED = 'CANCELLED',
-}
-
-export enum Extension {
-  AIR_CONDITIONER = 'AIR_CONDITIONER',
-  FRIDGE = 'FRIDGE',
-  WASHING_MACHINE = 'WASHING_MACHINE',
-  KITCHEN = 'KITCHEN',
-  FREE_TIME = 'FREE_TIME',
-  PARKING = 'PARKING',
-  WIFI = 'WIFI',
-  GARRET = 'GARRET',
-  ELECTRIC = 'ELECTRIC',
-  WATER = 'WATER',
 }

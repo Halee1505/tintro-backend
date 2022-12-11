@@ -6,11 +6,11 @@ export type billDocument = Bill & Document;
 @Schema()
 export class Bill {
   @Prop()
-  mRoomId: number;
+  mRoomId: string;
   @Prop()
-  mRenterId: number;
+  mRenterId: string;
   @Prop()
-  mLeaserId: number;
+  mLeaserId: string;
   @Prop()
   mRentDate: Date;
   @Prop()

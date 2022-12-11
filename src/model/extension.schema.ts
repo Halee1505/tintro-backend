@@ -6,7 +6,7 @@ export type extensionDocument = Extension & Document;
 @Schema()
 export class Extension {
   @Prop()
-  mRoomId: number;
+  mRoomId: string;
   @Prop()
   mExtensionName: string;
   @Prop()

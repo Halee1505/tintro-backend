@@ -18,18 +18,18 @@ export class UserService {
   async getUsers(): Promise<User[]> {
     return this.userModel.find().exec();
   }
-  async getUserById(id: number): Promise<User> {
+  async getUserById(id: string): Promise<User> {
     return this.userModel.findOne({ _id: id }).exec();
   }
   async createUser(userInfo: User): Promise<User> {
     const newUser = new this.userModel(userInfo);
     return await newUser.save();
   }
-  async updateUser(id: number, userInfo: User): Promise<User> {
+  async updateUser(id: string, userInfo: User): Promise<User> {
     return this.userModel.findOneAndUpdate({ _id: id }, userInfo).exec();
   }
 
-  async deleteUser(id: number): Promise<User> {
+  async deleteUser(id: string): Promise<User> {
     return this.userModel.findOneAndDelete({ _id: id }).exec();
   }
 
@@ -68,6 +68,33 @@ export class UserService {
       });
     }
   }
+
+  async changePassword(
+    @Res() res,
+    @Body()
+    phoneNumber: string,
+    password: string,
+    newPassword: string,
+  ): Promise<User> {
+    const user = await this.userModel
+      .findOne({ mPhoneNumber: phoneNumber })
+      .exec();
+    if (user) {
+      if (user.mPassword === password) {
+        user.mPassword = newPassword;
+        return res.status(HttpStatus.OK).json({
+          message: 'Change password successfully',
+          data: user,
+          statusCode: HttpStatus.OK,
+        });
+      } else {
+        return res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).json({
+          message: 'Sai mật khẩu',
+          statusCode: HttpStatus.NON_AUTHORITATIVE_INFORMATION,
+        });
+      }
+    }
+  }
 }
 
 export class BillService {
@@ -75,37 +102,71 @@ export class BillService {
   async getBills(): Promise<Bill[]> {
     return this.billModel.find().exec();
   }
-  async getBillById(id: number): Promise<Bill> {
+  async getBillById(id: string): Promise<Bill> {
     return this.billModel.findOne({ _id: id }).exec();
   }
+  async getBillByLeaserId(id: string): Promise<Bill[]> {
+    return this.billModel.find({ mLeaserId: id }).exec();
+  }
+  async getBillByRenterId(id: string): Promise<Bill[]> {
+    return this.billModel.find({ mRentersId: id }).exec();
+  }
+
   async createBill(billInfo: Bill): Promise<Bill> {
     const newBill = new this.billModel(billInfo);
     return await newBill.save();
   }
-  async updateBill(id: number, billInfo: Bill): Promise<Bill> {
+  async updateBill(id: string, billInfo: Bill): Promise<Bill> {
     return this.billModel.findOneAndUpdate({ _id: id }, billInfo).exec();
   }
-  async deleteBill(id: number): Promise<Bill> {
+  async deleteBill(id: string): Promise<Bill> {
     return this.billModel.findOneAndDelete({ _id: id }).exec();
   }
 }
 
 export class RoomService {
-  constructor(@InjectModel(Room.name) private roomModel: Model<roomDocument>) {}
+  constructor(
+    @InjectModel(Room.name) private roomModel: Model<roomDocument>,
+    @InjectModel(Extension.name)
+    private extensionModel: Model<extensionDocument>,
+  ) {}
   async getRooms(): Promise<Room[]> {
     return this.roomModel.find().exec();
   }
-  async getRoomById(id: number): Promise<Room> {
-    return this.roomModel.findOne({ _id: id }).exec();
+  async getRoomByIdWithExtension(id: string): Promise<Room> {
+    const room = (await this.roomModel
+      .findOne({
+        _id: id,
+      })
+      .exec()) as any;
+    const extension = await this.extensionModel
+      .find({
+        mRoomId: id,
+      })
+      .exec();
+    const result = {
+      ...room._doc,
+      mExtensions: extension,
+    };
+    return result;
   }
+
+  async getRoomByRenterId(id: string): Promise<Room[]> {
+    return this.roomModel.find({ mRenterId: id }).exec();
+  }
+
+  async getRoomByLeaserId(id: string): Promise<Room[]> {
+    return this.roomModel.find({ mLeaserId: id }).exec();
+  }
+
   async createRoom(roomInfo: Room): Promise<Room> {
     const newRoom = new this.roomModel(roomInfo);
     return await newRoom.save();
   }
-  async updateRoom(id: number, roomInfo: Room): Promise<Room> {
+  async updateRoom(id: string, roomInfo: Room): Promise<Room> {
     return this.roomModel.findOneAndUpdate({ _id: id }, roomInfo).exec();
   }
-  async deleteRoom(id: number): Promise<Room> {
+  async deleteRoom(id: string): Promise<Room> {
     return this.roomModel.findOneAndDelete({ _id: id }).exec();
   }
 }
@@ -118,7 +179,7 @@ export class FixRequestService {
   async getFixRequests(): Promise<FixRequest[]> {
     return this.fixRequestModel.find().exec();
   }
-  async getFixRequestById(id: number): Promise<FixRequest> {
+  async getFixRequestById(id: string): Promise<FixRequest> {
     return this.fixRequestModel
       .findOne({
         _id: id,
@@ -130,7 +191,7 @@ export class FixRequestService {
     return await newFixRequest.save();
   }
   async updateFixRequest(
-    id: number,
+    id: string,
     fixRequestInfo: FixRequest,
   ): Promise<FixRequest> {
     return this.fixRequestModel
@@ -140,7 +201,7 @@ export class FixRequestService {
       .exec();
   }
 
-  async deleteFixRequest(id: number): Promise<FixRequest> {
+  async deleteFixRequest(id: string): Promise<FixRequest> {
     return this.fixRequestModel.findOneAndDelete({ _id: id }).exec();
   }
 }
@@ -153,22 +214,31 @@ export class ExtensionService {
   async getExtensions(): Promise<Extension[]> {
     return this.extensionModel.find().exec();
   }
-  async getExtensionById(id: number): Promise<Extension> {
+  async getExtensionById(id: string): Promise<Extension> {
     return this.extensionModel.findOne({ _id: id }).exec();
   }
+  async getExtensionsWithRoom(id: string): Promise<Extension> {
+    return this.extensionModel
+      .findOne({
+        mRoomId: id,
+      })
+      .populate('mRoomId')
+      .exec();
+  }
+
   async createExtension(extensionInfo: Extension): Promise<Extension> {
     const newExtension = new this.extensionModel(extensionInfo);
     return await newExtension.save();
   }
   async updateExtension(
-    id: number,
+    id: string,
     extensionInfo: Extension,
   ): Promise<Extension> {
     return this.extensionModel
       .findOneAndUpdate({ _id: id }, extensionInfo)
       .exec();
   }
-  async deleteExtension(id: number): Promise<Extension> {
+  async deleteExtension(id: string): Promise<Extension> {
     return this.extensionModel.findOneAndDelete({ _id: id }).exec();
   }
 }

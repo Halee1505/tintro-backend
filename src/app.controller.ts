@@ -44,7 +44,7 @@ export class UserController {
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: number): Promise<User> {
+  getUserById(@Param('id') id: string): Promise<User> {
     return this.userService.getUserById(id);
   }
   @Post()
@@ -62,11 +62,11 @@ export class UserController {
   }
 
   @Put(':id')
-  updateUser(@Param('id') id: number, @Body() user: User): Promise<User> {
+  updateUser(@Param('id') id: string, @Body() user: User): Promise<User> {
     return this.userService.updateUser(id, user);
   }
   @Delete(':id')
-  deleteUser(@Param('id') id: number): Promise<User> {
+  deleteUser(@Param('id') id: string): Promise<User> {
     return this.userService.deleteUser(id);
   }
 }
@@ -81,22 +81,29 @@ export class BillController {
   }
 
   @Get(':id')
-  getBillById(@Param('id') id: number): Promise<Bill> {
+  getBillById(@Param('id') id: string): Promise<Bill> {
     return this.billService.getBillById(id);
   }
-
+  @Get('leaser/:id')
+  getBillByLeaserId(@Param('id') id: string): Promise<Bill[]> {
+    return this.billService.getBillByLeaserId(id);
+  }
+  @Get('renter/:id')
+  getBillByRenterId(@Param('id') id: string): Promise<Bill[]> {
+    return this.billService.getBillByRenterId(id);
+  }
   @Post()
   createBill(@Body() bill: Bill): Promise<Bill> {
     return this.billService.createBill(bill);
   }
 
   @Put(':id')
-  updateBill(@Param('id') id: number, @Body() bill: Bill): Promise<Bill> {
+  updateBill(@Param('id') id: string, @Body() bill: Bill): Promise<Bill> {
     return this.billService.updateBill(id, bill);
   }
 
   @Delete(':id')
-  deleteBill(@Param('id') id: number): Promise<Bill> {
+  deleteBill(@Param('id') id: string): Promise<Bill> {
     return this.billService.deleteBill(id);
   }
 }
@@ -111,8 +118,8 @@ export class RoomController {
   }
 
   @Get(':id')
-  getRoomById(@Param('id') id: number): Promise<Room> {
-    return this.roomService.getRoomById(id);
+  getRoomByIdWithExtension(@Param('id') id: string): Promise<Room> {
+    return this.roomService.getRoomByIdWithExtension(id);
   }
 
   @Post()
@@ -121,12 +128,12 @@ export class RoomController {
   }
 
   @Put(':id')
-  updateRoom(@Param('id') id: number, @Body() room: Room): Promise<Room> {
+  updateRoom(@Param('id') id: string, @Body() room: Room): Promise<Room> {
     return this.roomService.updateRoom(id, room);
   }
 
   @Delete(':id')
-  deleteRoom(@Param('id') id: number): Promise<Room> {
+  deleteRoom(@Param('id') id: string): Promise<Room> {
     return this.roomService.deleteRoom(id);
   }
 }
@@ -141,7 +148,7 @@ export class FixRequestController {
   }
 
   @Get(':id')
-  getFixRequestById(@Param('id') id: number): Promise<FixRequest> {
+  getFixRequestById(@Param('id') id: string): Promise<FixRequest> {
     return this.fixRequestService.getFixRequestById(id);
   }
   @Post()
@@ -150,13 +157,13 @@ export class FixRequestController {
   }
   @Put(':id')
   updateFixRequest(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() fixRequestInfo: FixRequest,
   ): Promise<FixRequest> {
     return this.fixRequestService.updateFixRequest(id, fixRequestInfo);
   }
   @Delete(':id')
-  deleteFixRequest(@Param('id') id: number): Promise<FixRequest> {
+  deleteFixRequest(@Param('id') id: string): Promise<FixRequest> {
     return this.fixRequestService.deleteFixRequest(id);
   }
 }
@@ -171,8 +178,12 @@ export class ExtensionController {
   }
 
   @Get(':id')
-  getExtensionById(@Param('id') id: number): Promise<Extension> {
+  getExtensionById(@Param('id') id: string): Promise<Extension> {
     return this.extensionService.getExtensionById(id);
+  }
+  @Get('room/:id')
+  getExtensionsWithRoom(@Param('id') id: string): Promise<Extension> {
+    return this.extensionService.getExtensionsWithRoom(id);
   }
   @Post()
   createExtension(@Body() extensionInfo: Extension): Promise<Extension> {
@@ -181,13 +192,13 @@ export class ExtensionController {
 
   @Put(':id')
   updateExtension(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() extensionInfo: Extension,
   ): Promise<Extension> {
     return this.extensionService.updateExtension(id, extensionInfo);
   }
   @Delete(':id')
-  deleteExtension(@Param('id') id: number): Promise<Extension> {
+  deleteExtension(@Param('id') id: string): Promise<Extension> {
     return this.extensionService.deleteExtension(id);
   }
 }

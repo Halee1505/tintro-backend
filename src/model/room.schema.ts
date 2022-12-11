@@ -6,13 +6,15 @@ export type roomDocument = Room & Document;
 @Schema()
 export class Room {
   @Prop()
-  mRenterId: number;
+  mRenterId: string;
   @Prop()
-  mLeaserId: number;
+  mLeaserId: string;
   @Prop()
   mRoomName: string;
   @Prop()
   mImageUrl: string[];
+  @Prop()
+  mExtensions: string[];
   @Prop()
   mRentPrice: number;
   @Prop()

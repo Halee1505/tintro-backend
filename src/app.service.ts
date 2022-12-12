@@ -154,6 +154,11 @@ export class RoomService {
   async getRoomByRenterId(id: string): Promise<Room[]> {
     return this.roomModel.find({ mRenterId: id }).exec();
   }
+  async getRentedRoomsCountByLeaserId(id: string): Promise<number> {
+    return await this.roomModel
+      .countDocuments({ mLeaserId: id, mStatus: 'RENTED' })
+      .exec();
+  }
 
   async getRoomByLeaserId(id: string): Promise<Room[]> {
     return this.roomModel.find({ mLeaserId: id }).exec();

@@ -121,6 +121,14 @@ export class RoomController {
   getRoomByIdWithExtension(@Param('id') id: string): Promise<Room> {
     return this.roomService.getRoomByIdWithExtension(id);
   }
+  @Get('leaser/:id')
+  getRoomByLeaserId(@Param('id') id: string): Promise<Room[]> {
+    return this.roomService.getRoomByLeaserId(id);
+  }
+  @Get('renter/:id')
+  getRoomByRenterId(@Param('id') id: string): Promise<Room[]> {
+    return this.roomService.getRoomByRenterId(id);
+  }
 
   @Post()
   createRoom(@Body() room: Room): Promise<Room> {

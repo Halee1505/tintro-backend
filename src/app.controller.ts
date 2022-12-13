@@ -92,12 +92,12 @@ export class BillController {
   getBillByRenterId(@Param('id') id: string): Promise<Bill[]> {
     return this.billService.getBillByRenterId(id);
   }
-  @Get('room/:id')
+  @Get('room/:id/:type')
   getBillByRoomId(
     @Param('id') id: string,
-    @Body() filter: any,
+    @Param('type') type: string,
   ): Promise<Bill[]> {
-    return this.billService.getBillByRoomId(id, filter);
+    return this.billService.getBillByRoomId(id, type);
   }
 
   @Post()

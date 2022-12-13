@@ -113,7 +113,11 @@ export class BillService {
   }
 
   async getBillByRoomId(id: string, filter: any): Promise<Bill[]> {
-    return this.billModel.find({ mRoomId: id, mType: filter.type }).exec();
+    return this.billModel
+      .find({
+        $and: [{ mRoomId: id }, { mType: filter.type }],
+      })
+      .exec();
   }
 
   async createBill(billInfo: Bill): Promise<Bill> {

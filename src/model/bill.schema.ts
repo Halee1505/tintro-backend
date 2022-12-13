@@ -12,6 +12,8 @@ export class Bill {
   @Prop()
   mLeaserId: string;
   @Prop()
+  mType: string;
+  @Prop()
   mRentDate: Date;
   @Prop()
   mElectricityFrom: number;

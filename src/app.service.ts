@@ -112,6 +112,10 @@ export class BillService {
     return this.billModel.find({ mRentersId: id }).exec();
   }
 
+  async getBillByRoomId(id: string, filter: any): Promise<Bill[]> {
+    return this.billModel.find({ mRoomId: id, mType: filter.type }).exec();
+  }
+
   async createBill(billInfo: Bill): Promise<Bill> {
     const newBill = new this.billModel(billInfo);
     return await newBill.save();

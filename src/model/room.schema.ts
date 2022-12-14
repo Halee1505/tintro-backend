@@ -26,6 +26,8 @@ export class Room {
   @Prop()
   mArea: number;
   @Prop()
+  mTitle: string;
+  @Prop()
   mDescription: string;
   @Prop()
   mStatus: RoomStatus;

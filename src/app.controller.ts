@@ -129,7 +129,7 @@ export class RoomController {
 
   @Get(':id')
   getRoomByIdWithExtension(@Param('id') id: string): Promise<Room> {
-    return this.roomService.getRoomByIdWithExtension(id);
+    return this.roomService.getRoomById(id);
   }
   @Get('leaser/:id')
   getRoomByLeaserId(@Param('id') id: string): Promise<Room[]> {

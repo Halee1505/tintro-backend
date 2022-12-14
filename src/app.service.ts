@@ -113,6 +113,10 @@ export class BillService {
   }
 
   async getBillByRoomId(id: string, type: string): Promise<Bill[]> {
+    if (type === 'all') {
+      return this.billModel.find({ mRoomId: id }).exec();
+    }
+
     return this.billModel
       .find({
         $and: [{ mRoomId: id }, { mType: type }],

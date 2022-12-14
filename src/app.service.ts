@@ -193,6 +193,15 @@ export class FixRequestService {
       })
       .exec();
   }
+
+  async getFixRequestByRoomId(id: string): Promise<FixRequest[]> {
+    return this.fixRequestModel
+      .find({
+        mRoomId: id,
+      })
+      .exec();
+  }
+
   async createFixRequest(fixRequestInfo: FixRequest): Promise<FixRequest> {
     const newFixRequest = new this.fixRequestModel(fixRequestInfo);
     return await newFixRequest.save();

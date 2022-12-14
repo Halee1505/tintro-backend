@@ -173,6 +173,10 @@ export class FixRequestController {
   getFixRequestById(@Param('id') id: string): Promise<FixRequest> {
     return this.fixRequestService.getFixRequestById(id);
   }
+  @Get('room/:id')
+  getFixRequestByRoomId(@Param('id') id: string): Promise<FixRequest[]> {
+    return this.fixRequestService.getFixRequestByRoomId(id);
+  }
   @Post()
   createFixRequest(@Body() fixRequestInfo: FixRequest): Promise<FixRequest> {
     return this.fixRequestService.createFixRequest(fixRequestInfo);

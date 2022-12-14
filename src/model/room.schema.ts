@@ -16,6 +16,10 @@ export class Room {
   @Prop()
   mExtensions: string[];
   @Prop()
+  mCurPeople: number;
+  @Prop()
+  mMaxPeople: number;
+  @Prop()
   mRentPrice: number;
   @Prop()
   mAddress: string;
@@ -30,7 +34,7 @@ export class Room {
   @Prop()
   mWaterPrice: number;
   @Prop()
-  mBillDeadline: Date;
+  mClosingDate: Date;
   @Prop()
   mCreated: Date;
   @Prop()

@@ -15,6 +15,7 @@ import { Extension } from './model/extension.schema';
 import { FixRequest } from './model/fixRequest.schema';
 import { Room } from './model/room.schema';
 import { User } from './model/user.schema';
+import { Notification } from './model/notification.schema';
 import {
   AppService,
   UserService,
@@ -22,6 +23,7 @@ import {
   RoomService,
   FixRequestService,
   ExtensionService,
+  NotificationService,
 } from './app.service';
 
 @Controller()
@@ -220,5 +222,28 @@ export class ExtensionController {
   @Delete(':id')
   deleteExtension(@Param('id') id: string): Promise<Extension> {
     return this.extensionService.deleteExtension(id);
+  }
+}
+
+@Controller('notification')
+export class NotificationController {
+  constructor(private readonly NotificationService: NotificationService) {}
+
+  @Get()
+  getNotifications(): Promise<Notification[]> {
+    return this.NotificationService.getNotifications();
+  }
+
+  @Get(':id')
+  getNotificationById(@Param('id') id: string): Promise<Notification> {
+    return this.NotificationService.getNotificationById(id);
+  }
+  @Get('user/:id')
+  getNotificationsByUserId(@Param('id') id: string): Promise<Notification[]> {
+    return this.NotificationService.getNotificationsByUserId(id);
+  }
+  @Post()
+  createNewNotification(@Body() noti: Notification): Promise<Notification> {
+    return this.NotificationService.createNewNotification(noti);
   }
 }

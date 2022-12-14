@@ -7,12 +7,14 @@ import { Room, RoomSchema } from './model/room.schema';
 import { Bill, BillSchema } from './model/bill.schema';
 import { FixRequest, FixRequestSchema } from './model/fixRequest.schema';
 import { Extension, ExtensionSchema } from './model/extension.schema';
+import { Notification, NotificationSchema } from './model/notification.schema';
 import {
   UserService,
   RoomService,
   BillService,
   FixRequestService,
   ExtensionService,
+  NotificationService,
 } from './app.service';
 
 import {
@@ -21,6 +23,7 @@ import {
   BillController,
   FixRequestController,
   ExtensionController,
+  NotificationController,
 } from './app.controller';
 
 @Module({
@@ -34,6 +37,7 @@ import {
       { name: Room.name, schema: RoomSchema },
       { name: FixRequest.name, schema: FixRequestSchema },
       { name: Extension.name, schema: ExtensionSchema },
+      { name: Notification.name, schema: NotificationSchema },
     ]),
   ],
   controllers: [
@@ -43,6 +47,7 @@ import {
     BillController,
     FixRequestController,
     ExtensionController,
+    NotificationController,
   ],
 
   providers: [
@@ -52,6 +57,7 @@ import {
     BillService,
     FixRequestService,
     ExtensionService,
+    NotificationService,
   ],
 })
 export class AppModule {}

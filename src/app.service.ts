@@ -6,6 +6,10 @@ import { Bill, billDocument } from './model/bill.schema';
 import { Room, roomDocument } from './model/room.schema';
 import { FixRequest, fixRequestDocument } from './model/fixRequest.schema';
 import { User, userDocument } from './model/user.schema';
+import {
+  Notification,
+  notificationDocument,
+} from './model/notification.schema';
 @Injectable()
 export class AppService {
   getHello(): string {
@@ -257,5 +261,32 @@ export class ExtensionService {
   }
   async deleteExtension(id: string): Promise<Extension> {
     return this.extensionModel.findOneAndDelete({ _id: id }).exec();
+  }
+}
+export class NotificationService {
+  constructor(
+    @InjectModel(Notification.name)
+    private notificationModel: Model<notificationDocument>,
+  ) {}
+  async getNotifications(): Promise<Notification[]> {
+    return this.notificationModel.find().exec();
+  }
+  async getNotificationById(id: string): Promise<Notification> {
+    return this.notificationModel.findOne({ _id: id }).exec();
+  }
+  async getNotificationsByUserId(id: string): Promise<Notification[]> {
+    return this.notificationModel
+      .find({
+        mUserId: id,
+      })
+      .exec();
+  }
+  async createNewNotification(noti: Notification): Promise<Notification> {
+    const newNotification = new this.notificationModel({
+      ...noti,
+      mCreated: new Date(),
+      mUpdated: new Date(),
+    });
+    return await newNotification.save();
   }
 }

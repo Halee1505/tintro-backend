@@ -140,7 +140,7 @@ export class RoomController {
     return this.roomService.getRentedRoomsCountByLeaserId(id);
   }
   @Get('renter/:id')
-  getRoomByRenterId(@Param('id') id: string): Promise<Room[]> {
+  getRoomByRenterId(@Param('id') id: string): Promise<Room> {
     return this.roomService.getRoomByRenterId(id);
   }
 

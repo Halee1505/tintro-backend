@@ -149,22 +149,8 @@ export class RoomService {
   async getRooms(): Promise<Room[]> {
     return this.roomModel.find().exec();
   }
-  async getRoomByIdWithExtension(id: string): Promise<Room> {
-    const room = (await this.roomModel
-      .findOne({
-        _id: id,
-      })
-      .exec()) as any;
-    const extension = await this.extensionModel
-      .find({
-        mRoomId: id,
-      })
-      .exec();
-    const result = {
-      ...room._doc,
-      mExtensions: extension,
-    };
-    return result;
+  async getRoomById(id: string): Promise<Room> {
+    return await this.roomModel.findOne({ _id: id }).exec();
   }
 
   async getRoomByRenterId(id: string): Promise<Room[]> {

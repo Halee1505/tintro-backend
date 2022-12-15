@@ -132,7 +132,11 @@ export class BillService {
   }
 
   async createBill(billInfo: Bill): Promise<Bill> {
-    const newBill = new this.billModel(billInfo);
+    const newBill = new this.billModel({
+      ...billInfo,
+      mCreated: new Date(),
+      mUpdated: new Date(),
+    });
     return await newBill.save();
   }
   async updateBill(id: string, billInfo: Bill): Promise<Bill> {

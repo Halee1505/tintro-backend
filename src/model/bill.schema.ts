@@ -8,27 +8,17 @@ export class Bill {
   @Prop()
   mRoomId: string;
   @Prop()
-  mRenterId: string;
+  mMonth: number;
   @Prop()
-  mLeaserId: string;
+  mYear: number;
   @Prop()
   mType: string;
   @Prop()
-  mRentDate: Date;
+  mElectricCount: number;
   @Prop()
-  mElectricityFrom: number;
+  mWaterCount: number;
   @Prop()
-  mWaterFrom: number;
-  @Prop()
-  mElectricityTo: number;
-  @Prop()
-  mWaterTo: number;
-  @Prop()
-  mTotalElectricity: number;
-  @Prop()
-  mTotalWater: number;
-  @Prop()
-  mTotalPrice: number;
+  mPrice: number;
   @Prop()
   mStatus: BillStatus;
   @Prop()

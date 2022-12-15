@@ -73,12 +73,7 @@ export class UserService {
     }
   }
 
-  async changePassword(
-    @Res() res,
-    @Body()
-    phoneNumber: string,
-    password: string,
-  ): Promise<User> {
+  async changePassword(phoneNumber: string, password: any): Promise<any> {
     const user = await this.userModel
       .findOneAndUpdate(
         {
@@ -90,18 +85,18 @@ export class UserService {
           ],
         },
         {
-          mPassword: password,
+          mPassword: password.mPassword,
         },
       )
       .exec();
     if (user) {
-      return res.status(HttpStatus.OK).json({
+      return JSON.stringify({
         message: 'Change password successfully',
         data: user,
         statusCode: HttpStatus.OK,
       });
     } else {
-      return res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).json({
+      return JSON.stringify({
         message: 'Sai mật khẩu',
         statusCode: HttpStatus.NON_AUTHORITATIVE_INFORMATION,
       });

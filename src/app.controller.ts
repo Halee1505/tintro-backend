@@ -68,14 +68,13 @@ export class UserController {
     return this.userService.updateUser(id, user);
   }
 
-  @Put('change/:id')
+  @Put('change/:phoneNumber')
   changePassword(
-    @Res() res,
+    @Param('phoneNumber') phoneNumber: string,
     @Body()
-    phoneNumber: string,
-    password: string,
-  ): Promise<User> {
-    return this.userService.changePassword(res, phoneNumber, password);
+    password: any,
+  ): Promise<any> {
+    return this.userService.changePassword(phoneNumber, password);
   }
 
   @Delete(':id')

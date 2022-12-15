@@ -132,8 +132,11 @@ export class RoomController {
     return this.roomService.getRoomById(id);
   }
   @Get('leaser/:id')
-  getRoomByLeaserId(@Param('id') id: string): Promise<Room[]> {
-    return this.roomService.getRoomByLeaserId(id);
+  getRoomByLeaserId(
+    @Param('id') id: string,
+    @Body() filter: any,
+  ): Promise<Room[]> {
+    return this.roomService.getRoomByLeaserId(id, filter);
   }
   @Get('leaser/:id/rented')
   getRentedRoomsCountByLeaserId(@Param('id') id: string): Promise<number> {

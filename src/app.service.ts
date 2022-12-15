@@ -162,8 +162,13 @@ export class RoomService {
       .exec();
   }
 
-  async getRoomByLeaserId(id: string): Promise<Room[]> {
-    return this.roomModel.find({ mLeaserId: id }).exec();
+  async getRoomByLeaserId(id: string, filter: any): Promise<Room[]> {
+    return this.roomModel
+      .find({
+        ...filter,
+        mLeaserId: id,
+      })
+      .exec();
   }
 
   async createRoom(roomInfo: Room): Promise<Room> {

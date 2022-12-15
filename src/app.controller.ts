@@ -131,7 +131,7 @@ export class RoomController {
   getRoomByIdWithExtension(@Param('id') id: string): Promise<Room> {
     return this.roomService.getRoomById(id);
   }
-  @Get('leaser/:id')
+  @Post('leaser/:id')
   getRoomByLeaserId(
     @Param('id') id: string,
     @Body() filter: any,

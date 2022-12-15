@@ -67,6 +67,17 @@ export class UserController {
   updateUser(@Param('id') id: string, @Body() user: User): Promise<User> {
     return this.userService.updateUser(id, user);
   }
+
+  @Put('change/:id')
+  changePassword(
+    @Res() res,
+    @Body()
+    phoneNumber: string,
+    password: string,
+  ): Promise<User> {
+    return this.userService.changePassword(res, phoneNumber, password);
+  }
+
   @Delete(':id')
   deleteUser(@Param('id') id: string): Promise<User> {
     return this.userService.deleteUser(id);

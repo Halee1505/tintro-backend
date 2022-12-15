@@ -78,25 +78,33 @@ export class UserService {
     @Body()
     phoneNumber: string,
     password: string,
-    newPassword: string,
   ): Promise<User> {
     const user = await this.userModel
-      .findOne({ mPhoneNumber: phoneNumber })
+      .findOneAndUpdate(
+        {
+          $or: [
+            { mPhoneNumber: phoneNumber },
+            {
+              mEmail: phoneNumber,
+            },
+          ],
+        },
+        {
+          mPassword: password,
+        },
+      )
       .exec();
     if (user) {
-      if (user.mPassword === password) {
-        user.mPassword = newPassword;
-        return res.status(HttpStatus.OK).json({
-          message: 'Change password successfully',
-          data: user,
-          statusCode: HttpStatus.OK,
-        });
-      } else {
-        return res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).json({
-          message: 'Sai mật khẩu',
-          statusCode: HttpStatus.NON_AUTHORITATIVE_INFORMATION,
-        });
-      }
+      return res.status(HttpStatus.OK).json({
+        message: 'Change password successfully',
+        data: user,
+        statusCode: HttpStatus.OK,
+      });
+    } else {
+      return res.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).json({
+        message: 'Sai mật khẩu',
+        statusCode: HttpStatus.NON_AUTHORITATIVE_INFORMATION,
+      });
     }
   }
 }
